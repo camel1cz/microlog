@@ -15,9 +15,12 @@ V první fázi jsem se zaměřil na rozšíření portfolia senzorů - navrhl js
 ## dokumentace
 Kompletní dokumentace v rozsahu původní funkčnosti micrologu je dostupná na [stránkách micrologu](http://microlog.mypower.cz).
 Dokumentace rozšíření, která jsem provedl je k dispozici [zde](docs/index.md).
-## todo
 
+## todo
 V nejbližším TODO mám podporu DHT22 (kvůli rozsahu měřených teplot).
 
 ## changelog
 V první verzi doplňuji podporu sběrnice 1wire a senzorů DHT11 a DS18B20.
+
+## licence
+Původní microlog má dost nejasnou licenci "free for non-commercial use", dovolím si jí upřesnit na GPLv2, která jednoznačně splňuje tento požadavek a navíc je jasně dáno co se smí a co ne.
