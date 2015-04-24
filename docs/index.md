@@ -30,3 +30,7 @@ V proměnné modExtBusPINmap říkáte, že první sběrnice sídlí na digitál
 
 aktuálně lze pouze přečíst naměřené hodnoty na hlavní stránce webového rozhraní micrologu a tyto hodnoty jsou také posílány na server. Hlavní server mypower.cz ale jejich zaznamenávání nepodporuje.
 Já jsem to vyřešil tak, že loguju do vlastního serveru - je to velice jednoduché a příklad naleznete v adresáři www
+
+## kompilace
+
+kompilace probíhá naprosto stejně jako u běžného micrologu. Do arduino IDE si jen musíte doinstalovat knihovny z adresáře `lib`. Stačí je nakopírovat do adresáře `sketchbook/libraries` (pokud neexistuje, tak jej vytvořte).
