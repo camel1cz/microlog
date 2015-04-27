@@ -28,5 +28,5 @@ V proměnné modExtBusPINmap říkáte, že první sběrnice sídlí na digitál
 
 ## reporting dat
 
-aktuálně lze pouze přečíst naměřené hodnoty na hlavní stránce webového rozhraní micrologu a tyto hodnoty jsou také posílány na server. Hlavní server mypower.cz ale jejich zaznamenávání nepodporuje.
+aktuálně lze pouze přečíst naměřené hodnoty na hlavní stránce webového rozhraní micrologu a nebo je vyčíst externím dotazem na [webové služby](webservices.md) a tyto hodnoty jsou také posílány na server. Hlavní server mypower.cz ale jejich zaznamenávání nepodporuje.
 Já jsem to vyřešil tak, že loguju do vlastního serveru - je to velice jednoduché a příklad naleznete v adresáři www

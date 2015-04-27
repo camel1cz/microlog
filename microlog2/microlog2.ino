@@ -23,16 +23,10 @@ byte maxErrors    = 3;  // default: 3
 
 byte NETmac[6]    = { 0xF6, 0x88, 0x00, 0x00, 0x00, 0x01 };
 //byte NETip[4]     = { 255, 255, 255, 255 }; // = DHCP
-/*
-byte NETip[4]     = { 10, 42, 0, 10 };  // { 255, 255, 255, 255 }; // = DHCP
-byte NETgw[4]     = { 10, 42, 0, 1 };
+byte NETip[4]     = { 192, 168, 1, 188 };  // { 255, 255, 255, 255 }; // = DHCP
+byte NETgw[4]     = { 192, 168, 1, 20 };
 byte NETmask[4]   = { 255, 255, 255, 0 };
-byte NETdns[4]    = { 10, 42, 0, 1 };
-*/
-byte NETip[4]     = { 192, 168, 0, 10 };  // { 255, 255, 255, 255 }; // = DHCP
-byte NETgw[4]     = { 192, 168, 0, 1 };
-byte NETmask[4]   = { 255, 255, 255, 0 };
-byte NETdns[4]    = { 192, 168, 0, 1 };
+byte NETdns[4]    = { 192, 168, 1, 100 };
 
 // ---[ DPIN 22..49 map ]--------------------------
 //                    00  01  02  03  04  05  06  07  08  09  10  11  12  13  14  15
@@ -46,9 +40,9 @@ uint16_t DPINlogicmask = (B00000000 << 8) | B00000011;  // pin/bit  0 = standard
 
 // mod MyPowerLog
 #define modMyPowerLog      1                    // 1=on 0=off
-#define modMyPowerHost     "log.camel.cz"     // log.mypower.cz
-#define modMyPowerURL      "/log/write"         // /
-#define modMyPowerFVEID    "camel_venku"        // mojefve1234
+#define modMyPowerHost     "log.mypower.cz"     // log.mypower.cz
+#define modMyPowerURL      "/"         // /
+#define modMyPowerFVEID    "mojefve1234"        // mojefve1234
 
 // mod StausLed
 #define modStatusLed       1         // 1=on 0=off
@@ -82,9 +76,9 @@ uint16_t DPINlogicmask = (B00000000 << 8) | B00000011;  // pin/bit  0 = standard
 
 // setup
  // null terminated array of protocols used
- byte modExtBusPINproto[] = {modExtBus1Wire, modExtBusDHT11, 0};
+ byte modExtBusPINproto[] = {modExtBusDHT11, modExtBus1Wire, 0};
  // pins for corresponding protocols above
- byte modExtBusPINmap[] = {3,2};
+ byte modExtBusPINmap[] = {2,3};
 #endif
 
 // ---------------------------------------------------
@@ -856,6 +850,7 @@ return xret;
 #define xACTsp     0x06
 #define xACTds     0x07
 #define xACTep     0x08
+#define xACTeb     0x09
 
 #define xACTwds    0x0C
 #define xACTwep    0x0D
@@ -1226,6 +1221,7 @@ if (xpk==xPinCmdWrite) {
     if (strcmp(xstr,"sp")==0) *qsaction=xACTsp; else
     if (strcmp(xstr,"dd")==0) *qsaction=xACTdd; else
     if (strcmp(xstr,"ep")==0) *qsaction=xACTep; else
+    if (strcmp(xstr,"eb")==0) *qsaction=xACTeb; else
     if (strcmp(xstr,"db")==0) *qsaction=xACTdb;    
     }
   }
@@ -1495,6 +1491,23 @@ FormatDateTimeStr(xstr, "j.n.Y@H:i:s",&xMpwDateTime,sizeof(xstr));
 #endif
             }
           else
+
+          if (qsaction==xACTeb)
+            {
+              client.write("~EXTBUS\n");
+#if modExtBus == 1
+            xln[0] = 0;
+            for (int i=0;i<xExtBusValCount;i++)
+              {
+              sprintf(xln,"V:%d:%d:", xExtBus[xExtBusValue[i].bus].pin, xExtBusValue[i].valOffset);
+              ftoa(xln + strlen(xln), xExtBusValue[i].cur, 2);
+              sprintf(xln + strlen(xln), "\n");
+              client.write((byte*)xln, strlen(xln));
+              }
+            client.write("\n");
+#endif
+            }
+          else
           
 #if ((modDisplay == 1) && (modDisplayType == dLCDKeyPad1602))
           if (qsaction==xACTdd)
@@ -1597,7 +1610,7 @@ FormatDateTimeStr(xstr, "j.n.Y@H:i:s",&xMpwDateTime,sizeof(xstr));
             xln[0] = 0;
             for (int i=0;i<xExtBusValCount;i++)
               {
-              sprintf(xln,"EXTBUS_%d_%d=", xExtBus[xExtBusValue[i].bus].pin, xExtBusValue[i].valOffset);
+              sprintf(xln,"EXTBUS_%d_%d: V=", xExtBus[xExtBusValue[i].bus].pin, xExtBusValue[i].valOffset);
               ftoa(xln + strlen(xln), xExtBusValue[i].cur, 2);
               sprintf(xln + strlen(xln), " <br>\n");
               client.write((byte*)xln, strlen(xln));
