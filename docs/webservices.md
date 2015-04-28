@@ -22,6 +22,6 @@ Formát řádku:
 ```
 V:<PIN>:<ID>:<HODNOTA>
 ```
-<PIN> ... pin arduina, ze kterého pochází hodnota,
-<ID> ... pořadové ID hodnoty (unikátní v rámci pinu),
-<HODNOTA> ... aktuální hodnota.
+`<PIN>` ... pin arduina, ze kterého pochází hodnota,<br />
+`<ID>` ... pořadové ID hodnoty (unikátní v rámci pinu),<br />
+`<HODNOTA>` ... aktuální hodnota.
